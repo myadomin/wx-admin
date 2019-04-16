@@ -4,6 +4,7 @@ import { Route, Link, withRouter, Redirect, Switch } from 'react-router-dom'
 import GlobalHeader from './GlobalHeader'
 import styles from './index.less'
 import NewsList from '@src/view/newsList'
+import NewsContent from '@src/view/newsList/newsContent'
 import Redux from '@src/view/redux'
 
 export default class Home extends Component {
@@ -58,6 +59,7 @@ export default class Home extends Component {
               {/* 加了Switch从上往下匹配 只匹配一次 /路由写最后 如果输入/abc 都没匹配到就匹配到最后的/路由 */}
               <Switch>
                 <Route path="/newsList" component={NewsList} />
+                <Route path="/newsContent/:id" component={NewsContent} />
                 <Route path="/redux" component={Redux} />
                 <Route path="/" render={() => <Redirect to="/newsList"/>} />
               </Switch>
