@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { message } from 'antd'
+import utils from './index'
 import {HashRouter} from 'react-router-dom'
 const router = new HashRouter()
 

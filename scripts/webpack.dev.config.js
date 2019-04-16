@@ -32,15 +32,15 @@ const webpackConfigDev = {
   devtool: 'eval-source-map',
   devServer: {
     host: 'localhost',
-    port: 8200,
+    port: 8111,
     open: true,
     quiet: true,
     // 本地开发跨域请求设置
     proxy: {
-      // '/api/*': {
-      //     target: 'http://beeossdev.egtest.cn:7777',
-      //     changeOrigin: true
-      // }
+      '*': {
+        target: 'http://localhost:7001',
+        changeOrigin: true
+      }
     }
   }
 }
