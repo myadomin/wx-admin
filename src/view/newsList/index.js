@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Table, Input } from 'antd'
+import { Button, Table, Input, Select } from 'antd'
 import axios from '@src/utils/axios'
 import urls from '@src/config/urls.js'
 import { Link } from 'react-router-dom'
@@ -20,7 +20,8 @@ export default class NewsList extends Component {
         columnKey: 'datetime',
         order: 'descend'
       },
-      filterTitle: ''
+      filterTitle: '',
+      filterBiz: ''
     }
   }
 
@@ -40,16 +41,20 @@ export default class NewsList extends Component {
   handleChangeTitle = (ev) => {
     this.setState({ filterTitle: ev.target.value })
   }
+  // 选择公众号
+  handleChangeBiz = (value) => {
+    this.setState({ filterBiz: value })
+  }
   // 获取文章列表
   getArticlelist = () => {
     const { pageNum, pageSize, total } = this.state.pagination
     const { columnKey, order } = this.state.sortedInfo
-    const { filterTitle } = this.state
-    console.log(this.state.sortedInfo)
+    const { filterTitle, filterBiz } = this.state
     const data = {
       pageNum,
       pageSize,
       filterTitle,
+      filterBiz,
       orderBy: columnKey,
       order: order === 'ascend' ? 'ASC' : 'DESC'
     }
@@ -77,7 +82,7 @@ export default class NewsList extends Component {
   }
 
   render () {
-    const { tableData, pagination, sortedInfo, filterTitle } = this.state
+    const { tableData, pagination, sortedInfo, filterTitle, filterBiz } = this.state
     const columns = [{
       title: 'id',
       dataIndex: 'id'
@@ -122,6 +127,14 @@ export default class NewsList extends Component {
           <span className={styles.left}>
             <span className={styles.leftItem}>
               标题：<Input style={{ width: 200 }} value={filterTitle} placeholder="输入标题" onChange={this.handleChangeTitle} />
+            </span>
+            <span className={styles.leftItem}>
+              {/* todo 抓完数据后把公众号label value存入数据库 然后展示在这个列表 */}
+              公众号：<Select style={{ width: 200 }} value={filterBiz} placeholder="选择公众号" onChange={this.handleChangeBiz}>
+                <Select.Option value={''}>所有</Select.Option>
+                <Select.Option value={'MzA3NjkyMDc2Ma=='}>公众号a</Select.Option>
+                <Select.Option value={'MzA3NjkyMDc2Mg=='}>公众号g</Select.Option>
+              </Select>
             </span>
             <span className={styles.leftItem}>
               <Button type="primary" onClick={this.search}>查询</Button>
