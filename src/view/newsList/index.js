@@ -77,9 +77,9 @@ export default class NewsList extends Component {
     })
   }
   // 删除文章
-  deleteArticle = (id) => {
-    console.log(id)
-  }
+  // deleteArticle = (id) => {
+  //   console.log(id)
+  // }
 
   render () {
     const { tableData, pagination, sortedInfo, filterTitle, filterBiz } = this.state
@@ -117,7 +117,7 @@ export default class NewsList extends Component {
       title: '操作',
       render: (text, record) => (
         <span>
-          <a href="javascript:;" onClick={() => this.deleteArticle(record.content_id)}>删除</a>
+          {/* <a href="javascript:;" onClick={() => this.deleteArticle(record.content_id)}>删除</a> */}
         </span>
       )
     }]

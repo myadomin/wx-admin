@@ -67,3 +67,26 @@ html, body {
 button:disabled {
 	cursor: not-allowed
 }
+
+/* 滚动条定制 */
+::-webkit-scrollbar {
+	width: 4px;
+}
+::-webkit-scrollbar-track {
+	background-color: #F6F8FA;
+}
+::-webkit-scrollbar-thumb {
+	background-color: #CCCCCC;
+	border-radius: 4px;
+}
+::-webkit-scrollbar:horizontal {
+	height: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+	background-color: #aaa;
+	border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:active {
+	background-color: #aaa;
+	border-radius: 4px;
+}
