@@ -3,6 +3,7 @@ import { Button, Table } from 'antd'
 import axios from '@src/utils/axios'
 import urls from '@src/config/urls.js'
 import { Link } from 'react-router-dom'
+import moment from 'moment'
 
 export default class NewsList extends Component {
   constructor (props, context) {
@@ -13,6 +14,10 @@ export default class NewsList extends Component {
         pageNum: 1,
         pageSize: 8,
         total: 0
+      },
+      sortedInfo: {
+        columnKey: 'datetime',
+        order: 'descend'
       }
     }
   }
@@ -24,7 +29,8 @@ export default class NewsList extends Component {
   // 分页、排序、筛选变化时触发 获取表格数据
   handleTableChange = (pagination, filters, sorter) => {
     this.setState({
-      pagination: { ...this.state.pagination, pageNum: pagination.current }
+      pagination: { ...this.state.pagination, pageNum: pagination.current },
+      sortedInfo: sorter
     }, () => {
       this.getArticlelist()
     })
@@ -32,12 +38,14 @@ export default class NewsList extends Component {
 
   getArticlelist = () => {
     const { pageNum, pageSize, total } = this.state.pagination
+    const { columnKey, order } = this.state.sortedInfo
+    console.log(this.state.sortedInfo)
     const data = {
       pageNum,
       pageSize,
       key: '',
-      orderBy: 'read_num',
-      order: 'ASC'
+      orderBy: columnKey,
+      order: order === 'ascend' ? 'ASC' : 'DESC'
     }
     axios.post(urls.getArticleList, data).then(res => {
       const tableData = res.list.map(obj => {
@@ -56,7 +64,7 @@ export default class NewsList extends Component {
   }
 
   render () {
-    const { tableData, pagination } = this.state
+    const { tableData, pagination, sortedInfo } = this.state
     const columns = [{
       title: 'id',
       dataIndex: 'id'
@@ -70,14 +78,23 @@ export default class NewsList extends Component {
       title: '公众号',
       dataIndex: 'author'
     }, {
-      title: '创建时间',
-      dataIndex: 'datetime'
-    }, {
       title: '阅读数',
-      dataIndex: 'read_num'
+      dataIndex: 'read_num',
+      sorter: true,
+      sortOrder: sortedInfo.columnKey === 'read_num' && sortedInfo.order
     }, {
       title: '转发数',
-      dataIndex: 'relay_num'
+      dataIndex: 'relay_num',
+      sorter: true,
+      sortOrder: sortedInfo.columnKey === 'relay_num' && sortedInfo.order
+    }, {
+      title: '创建时间',
+      dataIndex: 'datetime',
+      render: (text, record) => {
+        return <span>{moment(text * 1000).format('MM-DD: hh:mm:ss')}</span>
+      },
+      sorter: true,
+      sortOrder: sortedInfo.columnKey === 'datetime' && sortedInfo.order
     }, {
       title: '操作',
       render: (text, record) => (
