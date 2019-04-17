@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Table, Input, Select } from 'antd'
+import { Button, Table, Input, Select, message } from 'antd'
 import axios from '@src/utils/axios'
 import urls from '@src/config/urls.js'
 import { Link } from 'react-router-dom'
@@ -77,9 +77,17 @@ export default class NewsList extends Component {
     })
   }
   // 删除文章
-  // deleteArticle = (id) => {
-  //   console.log(id)
-  // }
+  deleteArticle = (id) => {
+    console.log(id)
+    axios.post(urls.deleteArticleList, { id: id }).then(res => {
+      if (res.affectedRows) {
+        this.getArticlelist()
+        message.success('删除成功')
+      } else {
+        message.error('删除失败')
+      }
+    })
+  }
 
   render () {
     const { tableData, pagination, sortedInfo, filterTitle, filterBiz } = this.state
@@ -117,7 +125,7 @@ export default class NewsList extends Component {
       title: '操作',
       render: (text, record) => (
         <span>
-          {/* <a href="javascript:;" onClick={() => this.deleteArticle(record.content_id)}>删除</a> */}
+          <a href="javascript:;" onClick={() => this.deleteArticle(record.content_id)}>删除</a>
         </span>
       )
     }]
