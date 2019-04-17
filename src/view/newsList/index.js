@@ -8,7 +8,12 @@ export default class NewsList extends Component {
   constructor (props, context) {
     super(props)
     this.state = {
-      tableData: []
+      tableData: [],
+      pagination: {
+        pageNum: 1,
+        pageSize: 8,
+        total: 0
+      }
     }
   }
 
@@ -16,18 +21,33 @@ export default class NewsList extends Component {
     this.getArticlelist()
   }
 
+  // 分页、排序、筛选变化时触发 获取表格数据
+  handleTableChange = (pagination, filters, sorter) => {
+    this.setState({
+      pagination: { ...this.state.pagination, pageNum: pagination.current }
+    }, () => {
+      this.getArticlelist()
+    })
+  }
+
   getArticlelist = () => {
+    const { pageNum, pageSize, total } = this.state.pagination
     const data = {
-      pageNum: 1,
-      pageSize: 10,
+      pageNum,
+      pageSize,
       key: '',
       orderBy: 'read_num',
       order: 'ASC'
     }
     axios.post(urls.getArticleList, data).then(res => {
-      this.setState({ tableData: res.map(obj => {
+      const tableData = res.list.map(obj => {
         return {...obj, key: obj.id}
-      })})
+      })
+      const pagination = { ...this.state.pagination, total: res.total }
+      this.setState({
+        tableData,
+        pagination
+      })
     })
   }
 
@@ -36,6 +56,7 @@ export default class NewsList extends Component {
   }
 
   render () {
+    const { tableData, pagination } = this.state
     const columns = [{
       title: 'id',
       dataIndex: 'id'
@@ -43,7 +64,7 @@ export default class NewsList extends Component {
       title: '标题',
       dataIndex: 'title',
       render: (text, record) => {
-        return <Link target='_blank' to={`/newsContent/${record.content_id}`}>{text}</Link>
+        return <Link style={{color: 'rgba(0, 0, 0, 0.65)'}} target='_blank' to={`/newsContent/${record.content_id}`}>{text}</Link>
       }
     }, {
       title: '公众号',
@@ -58,14 +79,13 @@ export default class NewsList extends Component {
       title: '转发数',
       dataIndex: 'relay_num'
     }, {
-      title: 'Action',
+      title: '操作',
       render: (text, record) => (
         <span>
           <a href="javascript:;" onClick={() => this.deleteArticle(record.content_id)}>删除</a>
         </span>
       )
     }]
-    const { tableData } = this.state
     return (
       <div className="newsList">
         <div className="header" style={{ margin: '0 0 20px 0' }}>
@@ -73,7 +93,12 @@ export default class NewsList extends Component {
           <Button type="primary" onClick={this.content}>请求详情</Button>
         </div>
         <div className="content">
-          <Table columns={columns} dataSource={tableData} />
+          <Table
+            columns={columns}
+            dataSource={tableData}
+            pagination={pagination}
+            onChange={this.handleTableChange}
+          />
         </div>
       </div>
     )

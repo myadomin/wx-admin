@@ -21,6 +21,10 @@ time, mark, audio, video, input {
 	border: 0;
 	vertical-align: baseline;
 }
+
+a {
+	text-decoration: none !important
+}
  
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
