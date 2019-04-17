@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { Button, Table } from 'antd'
+import { Button, Table, Input } from 'antd'
 import axios from '@src/utils/axios'
 import urls from '@src/config/urls.js'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
+import styles from './index.less'
 
 export default class NewsList extends Component {
   constructor (props, context) {
@@ -18,14 +19,14 @@ export default class NewsList extends Component {
       sortedInfo: {
         columnKey: 'datetime',
         order: 'descend'
-      }
+      },
+      filterTitle: ''
     }
   }
 
   componentDidMount () {
     this.getArticlelist()
   }
-
   // 分页、排序、筛选变化时触发 获取表格数据
   handleTableChange = (pagination, filters, sorter) => {
     this.setState({
@@ -35,15 +36,20 @@ export default class NewsList extends Component {
       this.getArticlelist()
     })
   }
-
+  // 标题
+  handleChangeTitle = (ev) => {
+    this.setState({ filterTitle: ev.target.value })
+  }
+  // 获取文章列表
   getArticlelist = () => {
     const { pageNum, pageSize, total } = this.state.pagination
     const { columnKey, order } = this.state.sortedInfo
+    const { filterTitle } = this.state
     console.log(this.state.sortedInfo)
     const data = {
       pageNum,
       pageSize,
-      key: '',
+      filterTitle,
       orderBy: columnKey,
       order: order === 'ascend' ? 'ASC' : 'DESC'
     }
@@ -58,13 +64,20 @@ export default class NewsList extends Component {
       })
     })
   }
-
+  // 点击查询 默认第一页
+  search = () => {
+    const pagination = { ...this.state.pagination, pageNum: 1 }
+    this.setState({ pagination }, () => {
+      this.getArticlelist()
+    })
+  }
+  // 删除文章
   deleteArticle = (id) => {
     console.log(id)
   }
 
   render () {
-    const { tableData, pagination, sortedInfo } = this.state
+    const { tableData, pagination, sortedInfo, filterTitle } = this.state
     const columns = [{
       title: 'id',
       dataIndex: 'id'
@@ -105,9 +118,15 @@ export default class NewsList extends Component {
     }]
     return (
       <div className="newsList">
-        <div className="header" style={{ margin: '0 0 20px 0' }}>
-          <Button type="primary" onClick={this.list}>请求列表</Button>
-          <Button type="primary" onClick={this.content}>请求详情</Button>
+        <div className={styles.header}>
+          <span className={styles.left}>
+            <span className={styles.leftItem}>
+              标题：<Input style={{ width: 200 }} value={filterTitle} placeholder="输入标题" onChange={this.handleChangeTitle} />
+            </span>
+            <span className={styles.leftItem}>
+              <Button type="primary" onClick={this.search}>查询</Button>
+            </span>
+          </span>
         </div>
         <div className="content">
           <Table
