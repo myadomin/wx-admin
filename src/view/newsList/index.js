@@ -12,7 +12,8 @@ export default class NewsList extends Component {
     this.state = {
       tableData: [],
       pagination: {
-        pageNum: 1,
+        // 直接对应到pagination组件 所以必须字段名称只能用这三个固定值 不能改动
+        current: 1,
         pageSize: 8,
         total: 0
       },
@@ -21,17 +22,25 @@ export default class NewsList extends Component {
         order: 'descend'
       },
       filterTitle: '',
-      filterBiz: ''
+      filterBiz: '',
+      bizList: []
     }
   }
 
   componentDidMount () {
     this.getArticlelist()
+    this.getBizList()
+  }
+  // 获取公众号list
+  getBizList = () => {
+    axios.post(urls.getBizList).then(res => {
+      this.setState({ bizList: res.list })
+    })
   }
   // 分页、排序、筛选变化时触发 获取表格数据
   handleTableChange = (pagination, filters, sorter) => {
     this.setState({
-      pagination: { ...this.state.pagination, pageNum: pagination.current },
+      pagination: { ...this.state.pagination, current: pagination.current },
       sortedInfo: sorter
     }, () => {
       this.getArticlelist()
@@ -47,11 +56,11 @@ export default class NewsList extends Component {
   }
   // 获取文章列表
   getArticlelist = () => {
-    const { pageNum, pageSize, total } = this.state.pagination
+    const { current, pageSize, total } = this.state.pagination
     const { columnKey, order } = this.state.sortedInfo
     const { filterTitle, filterBiz } = this.state
     const data = {
-      pageNum,
+      current,
       pageSize,
       filterTitle,
       filterBiz,
@@ -63,6 +72,7 @@ export default class NewsList extends Component {
         return {...obj, key: obj.id}
       })
       const pagination = { ...this.state.pagination, total: res.total }
+      console.log(pagination)
       this.setState({
         tableData,
         pagination
@@ -71,7 +81,7 @@ export default class NewsList extends Component {
   }
   // 点击查询 默认第一页
   search = () => {
-    const pagination = { ...this.state.pagination, pageNum: 1 }
+    const pagination = { ...this.state.pagination, current: 1 }
     this.setState({ pagination }, () => {
       this.getArticlelist()
     })
@@ -90,7 +100,7 @@ export default class NewsList extends Component {
   }
 
   render () {
-    const { tableData, pagination, sortedInfo, filterTitle, filterBiz } = this.state
+    const { tableData, pagination, sortedInfo, filterTitle, filterBiz, bizList } = this.state
     const columns = [{
       title: 'id',
       dataIndex: 'id'
@@ -137,11 +147,11 @@ export default class NewsList extends Component {
               标题：<Input style={{ width: 200 }} value={filterTitle} placeholder="输入标题" onChange={this.handleChangeTitle} />
             </span>
             <span className={styles.leftItem}>
-              {/* todo 抓完数据后把公众号label value存入数据库 然后展示在这个列表 */}
               公众号：<Select style={{ width: 200 }} value={filterBiz} placeholder="选择公众号" onChange={this.handleChangeBiz}>
                 <Select.Option value={''}>所有</Select.Option>
-                <Select.Option value={'MzA3NjkyMDc2Ma=='}>公众号a</Select.Option>
-                <Select.Option value={'MzA3NjkyMDc2Mg=='}>公众号g</Select.Option>
+                {bizList.map(obj => {
+                  return <Select.Option key={obj.id} value={obj.biz}>{obj.author}</Select.Option>
+                })}
               </Select>
             </span>
             <span className={styles.leftItem}>

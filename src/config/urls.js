@@ -19,5 +19,6 @@ if (server === 'localhost') {
 export default {
   getArticleList: `${ctx}/article/list`,
   deleteArticleList: `${ctx}/article/delete`,
-  getArticleContentById: (id) => `${ctx}/article/content?id=${id}`
+  getArticleContentById: (id) => `${ctx}/article/content?id=${id}`,
+  getBizList: `${ctx}/biz/list`
 }
