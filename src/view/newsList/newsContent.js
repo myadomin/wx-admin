@@ -21,17 +21,21 @@ export default class newsContent extends Component {
 
   render () {
     const { content } = this.state
+    // https://v.qq.com/iframe/preview.html?width=500&height=375&auto=0&vid=e0841bel9ll
+    // https://mp.weixin.qq.com/mp/readtemplate?t=pages/video_player_tmpl&action=mpvideo&auto=0&vid=wxv_770367681009795072
+
     return (
       <div className="newsContent">
-        <div className="title">
+        {/* <div className="title">
           {content.title}
         </div>
         <div className="author">
           {content.author}
-        </div>
-        {/* <div className="video">
-          <video src="http://v.qq.com/txp/iframe/player.html?origin=https%3A%2F%2Fmp.weixin.qq.com&vid=m0388crwn4g&autoplay=false&full=true&show1080p=false&isDebugIframe=false"></video>
         </div> */}
+        <div className="video">
+          <a target="_blank" href={content.video_url}>{content.video_url}</a>
+          <video src={content.video_url}></video>
+        </div>
         <div className="content">
           <div dangerouslySetInnerHTML={{__html: content.content}}></div>
         </div>

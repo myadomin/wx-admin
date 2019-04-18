@@ -35,7 +35,7 @@ const webpackConfigDev = {
     port: 8111,
     open: true,
     quiet: true,
-    // 本地开发跨域请求设置
+    // 本地开发都跨域请求到本地nodejs服务器http://localhost:7001
     proxy: {
       '*': {
         target: 'http://localhost:7001',

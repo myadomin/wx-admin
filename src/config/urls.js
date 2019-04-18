@@ -7,11 +7,13 @@ console.log(SERVER)
 const server = SERVER
 let ctx = ''
 if (server === 'localhost') {
+  // 本地开发npm run dev后 走webpack devServer proxy跨域
   ctx = ''
 } else if (server === 'testserver') {
-  ctx = ''
+  ctx = 'https://www.b1026.com/api'
 } else if (server === 'wwwserver') {
-  ctx = ''
+  // 线上环境npm run build后 前后端都部署在同域下 暂不做cors跨域
+  ctx = 'https://www.b1026.com/api'
 } else {
   ctx = ''
 }
