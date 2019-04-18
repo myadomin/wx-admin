@@ -32,10 +32,10 @@ export default class newsContent extends Component {
         <div className="author">
           {content.author}
         </div> */}
-        <div className="video">
+        {/* <div className="video">
           <a target="_blank" href={content.video_url}>{content.video_url}</a>
           <video src={content.video_url}></video>
-        </div>
+        </div> */}
         <div className="content">
           <div dangerouslySetInnerHTML={{__html: content.content}}></div>
         </div>
