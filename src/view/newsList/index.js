@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { Button, Table, Input, Select, message } from 'antd'
+import { Button, Table, Input, Select, message, Tooltip } from 'antd'
 import axios from '@src/utils/axios'
 import urls from '@src/config/urls.js'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
+import copy from 'copy-to-clipboard'
 import styles from './index.less'
 
 export default class NewsList extends Component {
@@ -72,7 +73,6 @@ export default class NewsList extends Component {
         return {...obj, key: obj.id}
       })
       const pagination = { ...this.state.pagination, total: res.total }
-      console.log(pagination)
       this.setState({
         tableData,
         pagination
@@ -103,7 +103,9 @@ export default class NewsList extends Component {
     const { tableData, pagination, sortedInfo, filterTitle, filterBiz, bizList } = this.state
     const columns = [{
       title: 'id',
-      dataIndex: 'id'
+      dataIndex: 'id',
+      sorter: true,
+      sortOrder: sortedInfo.columnKey === 'id' && sortedInfo.order
     }, {
       title: '标题',
       dataIndex: 'title',
@@ -131,6 +133,14 @@ export default class NewsList extends Component {
       },
       sorter: true,
       sortOrder: sortedInfo.columnKey === 'datetime' && sortedInfo.order
+    }, {
+      title: '视频',
+      dataIndex: 'video_url',
+      render: (text, record) => {
+        return text ? <Tooltip placement="top" title={text}>
+          <a href="javascript:;" onClick={() => copy(text)}>复制链接</a>
+        </Tooltip> : ''
+      }
     }, {
       title: '操作',
       render: (text, record) => (

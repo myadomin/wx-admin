@@ -12,7 +12,7 @@ if (server === 'localhost') {
 } else if (server === 'testserver') {
   ctx = 'https://www.b1026.com/api'
 } else if (server === 'wwwserver') {
-  // 线上环境npm run build后 前后端都部署在同域下 暂不做cors跨域
+  // 线上环境npm run build-www后 前后端都部署在同域下 暂不做cors跨域
   ctx = 'https://www.b1026.com/api'
 } else {
   ctx = ''
@@ -22,5 +22,6 @@ export default {
   getArticleList: `${ctx}/article/list`,
   deleteArticleList: `${ctx}/article/delete`,
   getArticleContentById: (id) => `${ctx}/article/content?id=${id}`,
-  getBizList: `${ctx}/biz/list`
+  getBizList: `${ctx}/biz/list`,
+  login: `${ctx}/user/login`
 }
