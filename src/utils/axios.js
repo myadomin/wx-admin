@@ -1,5 +1,6 @@
 import axios from 'axios'
-import {HashRouter} from 'react-router-dom'
+import { HashRouter } from 'react-router-dom'
+import utils from './index'
 import { message } from 'antd'
 const router = new HashRouter()
 
@@ -8,6 +9,10 @@ const router = new HashRouter()
 
 // 添加请求拦截器
 axios.interceptors.request.use(config => {
+  const csrftoken = utils.getCookie('csrfToken')
+  // egg csrf防范
+  // https://eggjs.org/zh-cn/core/security.html#%E5%AE%89%E5%85%A8%E5%A8%81%E8%83%81-csrf-%E7%9A%84%E9%98%B2%E8%8C%83
+  config.headers['x-csrf-token'] = csrftoken
   return config
 }, error => {
   return Promise.reject(error)
@@ -15,20 +20,16 @@ axios.interceptors.request.use(config => {
 
 // 添加响应拦截器
 axios.interceptors.response.use(response => {
-  if (response.data.ret === 0) {
-    // 正常
-    return response.data
-  } else if (response.data.ret === 1001) {
+  if (response.data.ret === 1001) {
     // 没有cookie或者非法cookie
     router.history.push('/login')
   } else {
-    message.error('错误：' + response.data)
-    // throw后就会走到catch
-    throw response.data
+    return response.data
   }
 }, error => {
   // 400等错误
   message.error('后台错误：' + error)
+  // throw后 axios走catch
   throw error
 })
 

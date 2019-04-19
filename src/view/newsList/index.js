@@ -24,7 +24,8 @@ export default class NewsList extends Component {
       },
       filterTitle: '',
       filterBiz: '',
-      bizList: []
+      bizList: [],
+      showDelBtn: false
     }
   }
 
@@ -75,7 +76,8 @@ export default class NewsList extends Component {
       const pagination = { ...this.state.pagination, total: res.data.total }
       this.setState({
         tableData,
-        pagination
+        pagination,
+        showDelBtn: Boolean(res.data.showDelBtn)
       })
     })
   }
@@ -94,13 +96,13 @@ export default class NewsList extends Component {
         this.getArticlelist()
         message.success('删除成功')
       } else {
-        message.error('删除失败')
+        message.error(res.msg)
       }
     })
   }
 
   render () {
-    const { tableData, pagination, sortedInfo, filterTitle, filterBiz, bizList } = this.state
+    const { tableData, pagination, sortedInfo, filterTitle, filterBiz, bizList, showDelBtn } = this.state
     const columns = [{
       title: 'id',
       dataIndex: 'id',
@@ -145,7 +147,7 @@ export default class NewsList extends Component {
       title: '操作',
       render: (text, record) => (
         <span>
-          <a href="javascript:;" onClick={() => this.deleteArticle(record.content_id)}>删除</a>
+          {showDelBtn ? <a href="javascript:;" onClick={() => this.deleteArticle(record.content_id)}>删除</a> : null}
         </span>
       )
     }]

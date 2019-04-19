@@ -23,5 +23,6 @@ export default {
   deleteArticleList: `${ctx}/article/delete`,
   getArticleContentById: (id) => `${ctx}/article/content?id=${id}`,
   getBizList: `${ctx}/biz/list`,
-  login: `${ctx}/user/login`
+  login: `${ctx}/user/login`,
+  logout: `${ctx}/user/logout`
 }
