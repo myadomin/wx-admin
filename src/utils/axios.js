@@ -1,6 +1,6 @@
 import axios from 'axios'
-import utils from './index'
 import {HashRouter} from 'react-router-dom'
+import { message } from 'antd'
 const router = new HashRouter()
 
 // 如果前后台非同域部署需要用
@@ -15,10 +15,21 @@ axios.interceptors.request.use(config => {
 
 // 添加响应拦截器
 axios.interceptors.response.use(response => {
-  return response.data
+  if (response.data.ret === 0) {
+    // 正常
+    return response.data
+  } else if (response.data.ret === 1001) {
+    // 没有cookie或者非法cookie
+    router.history.push('/login')
+  } else {
+    message.error('错误：' + response.data)
+    // throw后就会走到catch
+    throw response.data
+  }
 }, error => {
-  // message.error('后台接口报错')
-  return Promise.reject(error)
+  // 400等错误
+  message.error('后台错误：' + error)
+  throw error
 })
 
 export default axios

@@ -35,7 +35,7 @@ export default class NewsList extends Component {
   // 获取公众号list
   getBizList = () => {
     axios.post(urls.getBizList).then(res => {
-      this.setState({ bizList: res.list })
+      this.setState({ bizList: res.data.list })
     })
   }
   // 分页、排序、筛选变化时触发 获取表格数据
@@ -69,10 +69,10 @@ export default class NewsList extends Component {
       order: order === 'ascend' ? 'ASC' : 'DESC'
     }
     axios.post(urls.getArticleList, data).then(res => {
-      const tableData = res.list.map(obj => {
+      const tableData = res.data.list.map(obj => {
         return {...obj, key: obj.id}
       })
-      const pagination = { ...this.state.pagination, total: res.total }
+      const pagination = { ...this.state.pagination, total: res.data.total }
       this.setState({
         tableData,
         pagination
@@ -90,7 +90,7 @@ export default class NewsList extends Component {
   deleteArticle = (id) => {
     console.log(id)
     axios.post(urls.deleteArticleList, { id: id }).then(res => {
-      if (res.affectedRows) {
+      if (res.ret === 0) {
         this.getArticlelist()
         message.success('删除成功')
       } else {

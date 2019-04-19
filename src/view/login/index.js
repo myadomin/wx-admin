@@ -15,9 +15,8 @@ class Login extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         axios.post(urls.login, values).then(res => {
-          const { ret } = res
-          if (ret) {
-            console.log(121)
+          if (res.ret === 0) {
+            this.props.history.push('/')
           } else {
             message.error('用户名或者密码错误')
           }

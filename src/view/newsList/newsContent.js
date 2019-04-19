@@ -14,8 +14,7 @@ export default class newsContent extends Component {
 
   componentDidMount () {
     axios.get(urls.getArticleContentById(this.props.match.params.id)).then(res => {
-      console.log(res)
-      this.setState({ content: res.content })
+      this.setState({ content: res.data.content })
     })
   }
 
