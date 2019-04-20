@@ -9,10 +9,6 @@ const router = new HashRouter()
 
 // 添加请求拦截器
 axios.interceptors.request.use(config => {
-  const csrftoken = utils.getCookie('csrfToken')
-  // egg csrf防范
-  // https://eggjs.org/zh-cn/core/security.html#%E5%AE%89%E5%85%A8%E5%A8%81%E8%83%81-csrf-%E7%9A%84%E9%98%B2%E8%8C%83
-  config.headers['x-csrf-token'] = csrftoken
   return config
 }, error => {
   return Promise.reject(error)
