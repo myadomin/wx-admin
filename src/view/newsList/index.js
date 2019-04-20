@@ -139,9 +139,7 @@ export default class NewsList extends Component {
       title: '视频',
       dataIndex: 'video_url',
       render: (text, record) => {
-        return text ? <Tooltip placement="top" title={text}>
-          <a href="javascript:;" onClick={() => copy(text)}>复制链接</a>
-        </Tooltip> : ''
+        return text ? <a href={text} title={text} target='_blank'>查看</a> : ''
       }
     }, {
       title: '操作',

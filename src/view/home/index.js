@@ -6,11 +6,19 @@ import styles from './index.less'
 import NewsList from '@src/view/newsList'
 import NewsContent from '@src/view/newsList/newsContent'
 import Redux from '@src/view/redux'
+import utils from '@src/utils'
 
 export default class Home extends Component {
   constructor (props, context) {
     super(props)
     this.state = {
+    }
+  }
+
+  componentDidMount () {
+    const cookie = utils.getCookie('wx_admin')
+    if (!cookie) {
+      this.props.history.push('/login')
     }
   }
 
