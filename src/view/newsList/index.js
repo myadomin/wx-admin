@@ -15,11 +15,11 @@ export default class NewsList extends Component {
       pagination: {
         // 直接对应到pagination组件 所以必须字段名称只能用这三个固定值 不能改动
         current: 1,
-        pageSize: 8,
+        pageSize: 20,
         total: 0
       },
       sortedInfo: {
-        columnKey: 'datetime',
+        columnKey: 'id',
         order: 'descend'
       },
       filterTitle: '',
@@ -32,6 +32,7 @@ export default class NewsList extends Component {
   componentDidMount () {
     this.getArticlelist()
     this.getBizList()
+    window.addEventListener('keydown', this.handleKeyDown)
   }
   // 获取公众号list
   getBizList = () => {
@@ -88,6 +89,12 @@ export default class NewsList extends Component {
       this.getArticlelist()
     })
   }
+  // 回车查询
+  handleKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      this.search()
+    }
+  }
   // 删除文章
   deleteArticle = (id) => {
     console.log(id)
@@ -137,9 +144,13 @@ export default class NewsList extends Component {
       sortOrder: sortedInfo.columnKey === 'datetime' && sortedInfo.order
     }, {
       title: '视频',
-      dataIndex: 'video_url',
+      dataIndex: 'video_urls',
       render: (text, record) => {
-        return text ? <a href={text} title={text} target='_blank'>查看</a> : ''
+        if (text) {
+          return text.split(',').map(obj => {
+            return <a href={obj} title={obj} key={obj} target='_blank'>查看/</a>
+          })
+        }
       }
     }, {
       title: '操作',
