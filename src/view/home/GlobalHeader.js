@@ -21,7 +21,7 @@ class GlobalHeader extends Component {
   }
 
   render () {
-    const user = utils.getCookie('wx_admin')
+    const user = utils.getCookie('admin_info')
     const menu = (
       <Menu onClick={this.onClick}>
         <Menu.Item key="1"><Icon type="user"/>个人中心</Menu.Item>

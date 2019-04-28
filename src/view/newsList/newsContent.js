@@ -13,7 +13,7 @@ export default class newsContent extends Component {
   }
 
   componentDidMount () {
-    axios.get(urls.getArticleContentById(this.props.match.params.id)).then(res => {
+    axios.post(urls.getArticleContentById, { id: this.props.match.params.id }).then(res => {
       this.setState({ content: res.data.content })
     })
   }

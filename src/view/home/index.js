@@ -16,7 +16,7 @@ export default class Home extends Component {
   }
 
   componentDidMount () {
-    const cookie = utils.getCookie('wx_admin')
+    const cookie = utils.getCookie('admin_info')
     if (!cookie) {
       this.props.history.push('/login')
     }

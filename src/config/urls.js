@@ -19,10 +19,10 @@ if (server === 'localhost') {
 }
 
 export default {
-  getArticleList: `${ctx}/article/list`,
-  deleteArticleList: `${ctx}/article/delete`,
-  getArticleContentById: (id) => `${ctx}/article/content?id=${id}`,
-  getBizList: `${ctx}/biz/list`,
-  login: `${ctx}/user/login`,
-  logout: `${ctx}/user/logout`
+  getArticleList: `${ctx}/admin/article/list`,
+  deleteArticleList: `${ctx}/admin/article/delete`,
+  getArticleContentById: `${ctx}/admin/article/content`,
+  getBizList: `${ctx}/admin/biz/list`,
+  login: `${ctx}/admin/admin/login`,
+  logout: `${ctx}/admin/admin/logout`
 }
