@@ -16,7 +16,7 @@ export default class Home extends Component {
   }
 
   componentDidMount () {
-    const cookie = utils.getCookie('admin_info')
+    const cookie = utils.getCookie('adminInfo')
     if (!cookie) {
       this.props.history.push('/login')
     }

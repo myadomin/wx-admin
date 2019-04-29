@@ -20,8 +20,6 @@ export default class newsContent extends Component {
 
   render () {
     const { content } = this.state
-    // https://v.qq.com/iframe/preview.html?width=500&height=375&auto=0&vid=e0841bel9ll
-    // https://mp.weixin.qq.com/mp/readtemplate?t=pages/video_player_tmpl&action=mpvideo&auto=0&vid=wxv_770367681009795072
 
     return (
       <div className="newsContent">
@@ -32,8 +30,8 @@ export default class newsContent extends Component {
           {content.author}
         </div> */}
         {/* <div className="video">
-          <a target="_blank" href={content.video_url}>{content.video_url}</a>
-          <video src={content.video_url}></video>
+          <a target="_blank" href={content.videoUrl}>{content.videoUrl}</a>
+          <video src={content.videoUrl}></video>
         </div> */}
         <div className="content">
           <div dangerouslySetInnerHTML={{__html: content.content}}></div>

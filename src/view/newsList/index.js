@@ -119,32 +119,32 @@ export default class NewsList extends Component {
       title: '标题',
       dataIndex: 'title',
       render: (text, record) => {
-        return <Link style={{color: 'rgba(0, 0, 0, 0.65)'}} target='_blank' to={`/newsContent/${record.content_id}`}>{text}</Link>
+        return <Link style={{color: 'rgba(0, 0, 0, 0.65)'}} target='_blank' to={`/newsContent/${record.contentId}`}>{text}</Link>
       }
     }, {
       title: '公众号',
       dataIndex: 'author'
     }, {
       title: '阅读数',
-      dataIndex: 'read_num',
+      dataIndex: 'readNum',
       sorter: true,
-      sortOrder: sortedInfo.columnKey === 'read_num' && sortedInfo.order
+      sortOrder: sortedInfo.columnKey === 'readNum' && sortedInfo.order
     }, {
       title: '转发数',
-      dataIndex: 'relay_num',
+      dataIndex: 'relayNum',
       sorter: true,
-      sortOrder: sortedInfo.columnKey === 'relay_num' && sortedInfo.order
+      sortOrder: sortedInfo.columnKey === 'relayNum' && sortedInfo.order
     }, {
       title: '创建时间',
-      dataIndex: 'datetime',
+      dataIndex: 'dateTime',
       render: (text, record) => {
         return <span>{moment(text * 1000).format('MM-DD: hh:mm:ss')}</span>
       },
       sorter: true,
-      sortOrder: sortedInfo.columnKey === 'datetime' && sortedInfo.order
+      sortOrder: sortedInfo.columnKey === 'dateTime' && sortedInfo.order
     }, {
       title: '视频',
-      dataIndex: 'video_urls',
+      dataIndex: 'videoUrls',
       render: (text, record) => {
         if (text) {
           return text.split(',').map(obj => {
@@ -156,7 +156,7 @@ export default class NewsList extends Component {
       title: '操作',
       render: (text, record) => (
         <span>
-          {showDelBtn ? <a href="javascript:;" onClick={() => this.deleteArticle(record.content_id)}>删除</a> : null}
+          {showDelBtn ? <a href="javascript:;" onClick={() => this.deleteArticle(record.contentId)}>删除</a> : null}
         </span>
       )
     }]
