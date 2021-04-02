@@ -1,5 +1,5 @@
 # react-adomin
-自己搭建的一套react+webpack+redux+react-router+axios+antd+less+mock的开发脚手架
+基于react-temp搭建的后台管理系统
 
 ### 使用
 * `npm i` 安装包
